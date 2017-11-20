@@ -1108,8 +1108,91 @@ Node.js 的每一个 API 都是异步的，并作为一个独立线程运行，�
 Node.js 基本上所有的事件机制都是用设计模式中观察者模式实现。<br />
 Node.js 单线程类似进入一个while(true)的事件循环，直到没有事件观察者退出，每个异步事件都生成一个事件观察者，如果有事件发生就调用该回调函数.</p>
 </blockquote>
-<p><strong>事件驱动程序：</strong><br />
+<p><strong>事件驱动程序：</strong>&ndash;仔细阅读<br />
 Node.js 使用事件驱动模型，当web server接收到请求，就把它关闭然后进行处理，然后去服务下一个web请求。<br />
 当这个请求完成，它被放回处理队列，当到达队列开头，这个结果被返回给用户。<br />
 这个模型非常高效可扩展性非常强，因为webserver一直接受请求而不等待任何读写操作。（这也被称之为非阻塞式IO或者事件驱动IO）<br />
-在事件驱动模型中，会生成一个主循环来监听事件，当检测到事件时触发回调函数。</p></article></body></html>
+在事件驱动模型中，会生成一个主循环来监听事件，当检测到事件时触发回调函数。<br />
+ nodeEvent.js<br />
+<pre><code>//引入events模块
+var events = require('events');
+//创建 eventEmitter 对象
+var evemitter = new events.EventEmitter();
+
+var connectHandler = function connetced(){
+    console.log('链接成功');
+
+    evemitter.emit('data_received');//触发事件
+}
+evemitter.on('connection',connectHandler);//注册了事件connection 的一个监听器，然后通过emit,发送该方法
+
+evemitter.on('data_received',function(){ //注册事件的监听器
+    console.log('数据链接成功');
+});
+
+// 触发 connection 事件 
+evemitter.emit('connection');
+
+console.log('程序执行完毕');
+</code></pre></p>
+<h5 id="4getpost"><a name="user-content-4getpost" href="#4getpost" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>4、get/post 请求</h5>
+<p>1.get请求<br />
+<pre><code>var http = require('http');
+var url = require('url');
+http.createServer(function(req, res){
+    res.writeHead(200,{'Content-Type':'text/plain; charset = utf-8'});
+    //解析 url 参数
+    var params = url.parse(req.url,true).query;
+    res.write('name：' + params.name + '\n');
+    res.write('age:' + params.age + '\n');
+    res.write('user:' + params.user + '\n');
+    res.end();
+
+}).listen(3000);
+</code></pre></p>
+<p>2.post请求<br />
+<pre><code>var http = require('http');
+var util = require('util');
+
+//post 请求来了
+var querystring = require('querystring');
+
+var postHTML = 
+  '&lt;html&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;title&gt;菜鸟教程 Node.js 实例&lt;/title&gt;&lt;/head&gt;' +
+  '&lt;body&gt;' +
+  '&lt;form method=&quot;post&quot;&gt;' +
+  '网站名： &lt;input name=&quot;name&quot;&gt;&lt;br&gt;' +
+  '网站 URL： &lt;input name=&quot;url&quot;&gt;&lt;br&gt;' +
+  '&lt;input type=&quot;submit&quot;&gt;' +
+  '&lt;/form&gt;' +
+  '&lt;/body&gt;&lt;/html&gt;';
+
+
+http.createServer(function(req,res){
+    //定义了一个body 变量，用户暂存请求体信息
+    let body = '';
+
+    //通过req的data事件监听函数，每当接受请求体的数据时，就累加到body变量中
+    req.on('data',function(chunk){
+        body += chunk;
+    });
+
+    //在end事件触发后，通过querystring.parse将post解析为真正的POST请求格式，然后向客户端返回
+    req.on('end',function(){
+         // 解析参数
+        body = querystring.parse(body);
+        // 设置响应头部信息及编码
+        res.writeHead(200, {'Content-Type': 'text/html; charset=utf8'});
+
+        if(body.name &amp;&amp; body.url) { // 输出提交的数据
+            res.write(&quot;网站名：&quot; + body.name);
+            res.write(&quot;&lt;br&gt;&quot;);
+            res.write(&quot;网站 URL：&quot; + body.url);
+        } else {  // 输出表单
+            res.write(postHTML);
+        }
+        res.end();
+    });
+
+}).listen(3000);
+</code></pre></p></article></body></html>
