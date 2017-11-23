@@ -1195,45 +1195,4 @@ http.createServer(function(req,res){
     });
 
 }).listen(3000);
-</code></pre></p>
-<h5 id="5nodejs-express"><a name="user-content-5nodejs-express" href="#5nodejs-express" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>5、Node.js Express 框架</h5>
-<ul>
-<li>
-<p>简介<br />
-Express 是一个简洁而灵活的 node.js Web应用框架, 提供了一系列强大特性帮助你创建各种 Web 应用，和丰富的 HTTP 工具。<br />
-使用 Express 可以快速地搭建一个完整功能的网站。<br />
-Express 框架核心特性：<br />
-可以设置中间件来响应 HTTP 请求。<br />
-定义了路由表用于执行不同的 HTTP 请求动作。<br />
-可以通过向模板传递参数来动态渲染 HTML 页面。</p>
-</li>
-<li>
-<p>安装<br />
-<pre><code>$ cnpm install express --save
-$ cnpm install body-parser --save//- node.js 中间件，用于处理 JSON, Raw, Text和 URL 编码的数据。
-$ cnpm install cookie-parser --save//- 这就是一个解析Cookie的工具。通过req.cookies可以取到传过来的cookie，并把它们转成对象。
-$ cnpm install multer --save// - node.js 中间件，用于处理 enctype=&quot;multipart/form-data&quot;（设置表单的MIME编码）的表单数据。
-
-具体实例看node文件夹
-</code></pre></p>
-</li>
-</ul>
-<h5 id="6nodejs-restful-api"><a name="user-content-6nodejs-restful-api" href="#6nodejs-restful-api" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>6、Node.js RESTful API</h5>
-<ul>
-<li>简介：是一种软件架构<font color="red">风格</font>，表述性状态传递<blockquote>
-<p>表述性状态转移是一组架构约束条件和原则。满足这些约束条件和原则的应用程序或设计就是RESTful。需要注意的是，<font color="orange">REST是设计风格而不是标准。</font>REST通常基于使用HTTP，URI，和XML（标准通用标记语言下的一个子集）以及HTML（标准通用标记语言下的一个应用）这些现有的广泛流行的协议和标准。REST 通常使用 JSON 数据格式。</p>
-</blockquote>
-</li>
-<li>四种方法HTTP 方法<br />
-  以下为 REST 基本架构的四个方法（HTTP 方法）<br />
-  GET - 用于获取数据。<br />
-  PUT - 用于更新或添加数据。<br />
-  DELETE - 用于删除数据。<br />
-  POST - 用于添加数据。</li>
-</ul>
-<h5 id="7nodejs"><a name="user-content-7nodejs" href="#7nodejs" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>7、Node.js 多进程</h5>
-<ul>
-<li>简介：nodejs是以单线程模式运行，但是使用事件驱动来处理并发，这样有助于我们在多核cpu系统上创建多个子进程，从而提高性能。<br />
-<img alt="" src="F:/Blue/lianlianTask/2017-11-13/多进程.png" /><br />
-具体操作还待研究。</li>
-</ul></article></body></html>
+</code></pre></p></article></body></html>
