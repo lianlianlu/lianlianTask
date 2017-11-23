@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>express_index</title>
+</head>
+<body>
+	<!-- get 请求-->
+	<!-- <form action = "http://192.168.1.176:8081/process_get" method="GET">
+			用户名：<input type="text" name="username">
+			<br>
+			密码：<input type="password" name="pwd">
+	
+			<input type="submit" value="提交">
+	</form> -->
+
+	<!-- post 请求-->
+	<!-- <form action = "http://192.168.1.176:8081/process_post" method="POST">
+			用户名：<input type="text" name="username">
+			<br>
+			密码：<input type="password" name="pwd">
+	
+			<input type="submit" value="提交">
+	</form> -->
+
+	<!--文件上传-->
+
+	<form action="/file_upload" method="post" enctype="multipart/form-data">
+			<input type="file" name="images" size="50">
+			<br/>
+			<input type="submit" value="上传文件">
+	</form>
+
+
+</body>
+</html>
