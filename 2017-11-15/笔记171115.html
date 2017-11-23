@@ -1024,4 +1024,58 @@ body .markdown-body
 </ul>
 <pre><code>cnpm init //一路enter
 cnpm i mysql -D
-</code></pre></article></body></html>
+</code></pre>
+
+<ul>
+<li>主要功能<br />
+Node操作数据库：<br />
+1.mysql模块<br />
+ mysql.createConnection<br />
+ mysql.createPool<br />
+2.SQL语言<br />
+说到数据库，或者说是操作数据库，追根究底，无非四样，增删改查！<br />
+ <pre><code>   //建议大写 小写我能认识
+   增 
+   insert into 表（字段列表） values （字段值）
+   insert into user_table (username,password,online) values('wangwu','987654',0);
+
+   删
+   delete from 表 where 条件
+   delete from user_table where id=2;
+
+   改
+   update 表 set 字段=新值,字段=新值,字段=新值.... where 条件
+   update user_table set password=&quot;1111&quot;,username=&quot;hfeihfieh&quot;,online=&quot;1&quot; where id=3;
+
+   查
+   select 字段名 from 表 where 条件
+   select password,online from user_table  where id=1;
+
+</code></pre></li>
+</ul>
+<p>连接数据库：mysql.js文件</p>
+<pre><code>//前提：打开wamp，开发服务器，再打开Nvicat for MySQL,连接数据库
+    const mysql = require('mysql');
+
+    //1.链接，链接池
+    let db = mysql.createPool({
+        host:&quot;localhost&quot;,
+        user:&quot;root&quot;,
+        password:'',
+        database:&quot;bluetest13&quot;
+    });
+
+    //2.查询
+    db.query('select * from user_table',(err,data) =&gt; {
+        if(err){
+            console.log(err);
+        }else{
+            console.log(data);
+        }
+    });
+
+gitbash:    $ node mysql.js
+
+</code></pre>
+
+<p><img alt="" src="F:/Blue/lianlianTask/2017-11-15/连接数据库成功.png" /></p></article></body></html>
