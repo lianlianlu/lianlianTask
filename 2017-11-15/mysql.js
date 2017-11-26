@@ -5,7 +5,7 @@ let db = mysql.createPool({
 	host:"localhost",
 	user:"root",
 	password:'',
-	database:"bluetest13"
+	database:"bluetest"
 
 });
 

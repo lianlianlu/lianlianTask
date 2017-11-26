@@ -1,0 +1,39 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+body{
+	width: 100%;
+	font-size: 14px;
+}
+
+.container{
+	width: 500px;
+	height: 200px;
+	margin:100px auto;
+	background: yellow;
+	display: flex;
+	align-items:center;
+	justify-content:center;
+	flex-direction:column;
+}
+
+.input-login{
+	margin-bottom: 20px;
+}
+
+.input-login > input{
+	margin-bottom: 12px;
+}
+
+.input-btn > button{
+	margin-right: 20px;
+	background:#f00;
+	padding:8px 18px;
+	color:#fff;
+	border:none;
+}
+
+.input-btn > .login{
+	background-color: green;
+}
