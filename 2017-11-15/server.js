@@ -9,7 +9,7 @@ let db = mysql.createPool({
 	host:"localhost",
 	user:"root",
 	password:'',
-	database:'bluetest'
+	database:'20171113'
 });
 
 //测试是否连接上
@@ -73,6 +73,30 @@ wsServer.on('connection',(sock)=>{
 			});
 		}
 	});
+
+	//登录
+	sock.on('login',(user,pass) =>{
+		//第一步，还是校验数据
+		if(!regs.username.test(user)){
+			sock.emit('login_ret',1,'用户名不符合规范');
+		}else if(!regs.password.test(pass)){
+			sock.emit('login_ret',1,'密码不符合规范');
+		}else{
+			//校验
+			db.query(`select ID,password from user_table where username='${user}'`,(err,data) => {
+				if(err){
+					sock.emit('login_ret',1,'数据库错误');
+				}else if(data.length == 0){
+					sock.emit('login_ret',1,'该用户不存在');
+				}else{
+					sock.emit('login_ret',0,'登录成功');
+				}
+			});
+		}
+
+	});
+
+
 	
 
 });
