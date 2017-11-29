@@ -22,6 +22,7 @@
 			alert('登录失败:' + msg);
 		}else{
 			alert('恭喜你，登录成功，现在可以聊天了');
+			location.href = "chatRoom.html?username="+$('#username').val();
 		}
 	});
 
@@ -30,5 +31,4 @@
 		var pass = $('#psd').val();
 		sock.emit('login',username,pass);
 	});
-
 })(jQuery);

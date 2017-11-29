@@ -37,3 +37,52 @@ body{
 .input-btn > .login{
 	background-color: green;
 }
+
+.chat-container{
+	position: relative;
+	width: 100%;
+	background: pink;
+}
+
+.chat-container > .bottom{
+	position: absolute;
+	bottom:0;
+	top:auto;
+	display: flex;
+	width: 100%;
+}
+#send{
+	flex:0 0 80px;
+	width:80px;
+	order:1;
+	background:#0c7106;
+	color:#fff;
+	border:none;
+}
+
+#send-content{
+	flex:1;
+	order:0;
+}
+
+.ul1 > li{
+	display: flex;
+	align-items:center;
+	border-bottom:1px solid #ccc;
+	margin-bottom: 5px;
+}
+.ul1 > li > h6{
+	margin-right: 10px;
+	padding:5px 15px;
+	background:#fff;
+	text-align: center;
+	line-height: 40px;
+}
+
+.ul1 > li.otherMsg{
+	display: flex;
+	align-items:center;
+	border-bottom:1px solid #ccc;
+	margin-bottom: 5px;
+	flex-direction:row-reverse;
+}

@@ -3,24 +3,23 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,user-scalable=no">
-	<title>登录界面</title>
+	<title>聊天界面</title>
 	<link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
-	<div class="container">
-		<div class="input-login">
-			用户名：<input type="text" name="username" id="username"> <br>
-			密码：<input type="password" name="psd" id="psd"><br>
+	<div class="chat-container">
+		<div class="chat-content">
+			<ul class="ul1">
+			</ul>
 		</div>
-
-		<div class="input-btn">
-			<button class="login">登录</button>
-			<button class="register">注册</button>
+		<div class="bottom">
+			<button id="send">发送</button>
+			<textarea id="send-content" name="txt"></textarea>
 		</div>
 	</div>
 
 	<script type="text/javascript" src="http://localhost:8080/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="jquery.js"></script>
-	<script type="text/javascript" src="index.js"></script>
+	<script type="text/javascript" src="chatroom.js"></script>
 </body>
 </html>
