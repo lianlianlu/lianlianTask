@@ -18,3 +18,4 @@ db.query('select * from user_table',(err,data) => {
 	}
 });
 
+					

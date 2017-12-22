@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>捕鱼游戏</title>
+	<style type="text/css">
+		body{
+			text-align:center;
+			background: #000;
+		}
+		#c1{
+			background: url(img/game_bg_2_hd.jpg) no-repeat;
+			margin-top: 108px;
+		}
+	</style>
+	<script src="js/common.js"></script>
+	<script src="js/sprite.js"></script>
+	<script src="js/fish.js"></script>
+	
+	<script type="text/javascript">
+		
+		
+
+		window.onload = function(){
+			let oC=document.getElementById('c1');
+      let gd=oC.getContext('2d');
+      const W = oC.width,H = oC.height;
+
+      loadImgs(_resources, function (imgs){
+        let tower = new Sprite(_imgs.bottom,765,70);
+        tower.x = 400;
+        tower.y = H-70/2;
+
+
+        
+        function animate(){
+        	requestAnimationFrame(animate);
+        	gd.clearRect(0, 0, oC.width, oC.height);
+        	tower.draw(gd);
+          
+        }
+				
+        requestAnimationFrame(animate);
+        
+      });
+			
+
+		}
+	</script>
+	
+</head>
+<body>
+	<canvas id="c1" width="800" height="600"></canvas>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>两个饼图的联动</title>
+</head>
+<body>
+
+	<div id="container" style="width:800px;height: 800px; margin:100px auto;"></div>
+	
+<script type="text/javascript" src="echarts.js"></script>
+<script type="text/javascript">
+	window.onload = function(){
+		var container = document.querySelector('#container');
+		var option = {
+			title:{
+				text:'这是我的表格',
+				textStyle:{
+					color:'red',
+					fontSize:20
+				}
+			},
+			legend:{
+				top:'200',
+				orient:'horizontal'
+			},
+			xAxis:{
+				type:"category",
+				data:['总费用','房租','水电费','交通费','伙食费','日用品数']
+			},
+			yAxis:{
+				
+			}
+		}
+		//实例
+		var myChart = echarts.init(container);
+		myChart.setOption(option);
+	}
+</script>
+</body>
+</html>

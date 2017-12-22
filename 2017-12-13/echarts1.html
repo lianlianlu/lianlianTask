@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+    .box {width:800px; height:600px; border:1px solid black; margin:0 auto;}
+    </style>
+    <script src="echarts.js" charset="utf-8"></script>
+    <script>
+    	let $ = document.querySelectorAll.bind(document);
+    	window.onload = function(){
+    		var oBox = $('.box')[0];
+    		var option = {
+    			title:{
+    				text:'标题\n 这个是换行标志'
+    			},
+    			legend:{
+    				data:['男','女'],
+    				right:0,
+    				orient: 'horizontal'
+    			},
+    			xAxis:{
+    				type:'category',
+    				data:['周一','周二','周三','周四','周五','周六','周日']
+    			},
+    			yAxis:{
+    				type:'value'
+    			},
+    			series:[{
+    				name:'男',
+    				type:'bar',
+    				data: [6, 23, 4, 2, 9, 3, 10]
+    			},
+    			{
+            name: '女',
+            type: 'bar',
+            data: [45, 12, 14, 54, 15, 56, 14]
+          }]
+    		}
+    		var myCharts = echarts.init(oBox);
+    		myCharts.setOption(option);
+    	}
+    </script>
+  </head>
+  <body>
+    <div class="box"></div>
+  </body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+    .box {width:800px; height:600px; border:1px solid black; margin:0 auto;}
+    </style>
+    <script src="echarts.js" charset="utf-8"></script>
+    <script>
+    	let $ = document.querySelectorAll.bind(document);
+    	window.onload = function(){
+    		var oBox = $('.box')[0];
+    		var option = {
+            backgroundColor:'#2c343c',
+    			title:{
+    				text:'北京人口数量',
+              subtext:'这是副标题',
+              left:'center',
+              top:20,
+              textStyle:{
+                  color:'#ccc'
+              }
+    			},
+            series:[
+              {
+                name:'学历比例',
+                type:'pie',
+                radius:['70%','60%'],
+                data: [
+                  {name:'小学', value:350},
+                  {name:'中学', value:120},
+                  {name:'大学', value:1524},
+                  {name:'研究生', value:410},
+                  {name:'博士及以上', value:85},
+                ]
+              },
+              {
+                name:'性别比例',
+                type:'pie',
+                radius:['50%','30%'],
+                data:[
+                  {name:'男', value:2752},
+                  {name:'女', value:1985},
+                  {name:'其他', value:555}
+                ]
+              }
+            ]
+    		}
+    		var myCharts = echarts.init(oBox);
+    		myCharts.setOption(option);
+    	}
+    </script>
+  </head>
+  <body>
+    <div class="box"></div>
+  </body>
+</html>

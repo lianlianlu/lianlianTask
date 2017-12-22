@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style media="screen">
+		body{
+			background: black;
+			text-align: center;
+		}
+		#c1{
+			margin-top:50px;
+			background: #fff;
+		}
+
+		#c2{
+			margin-top:30px;
+			background: #f00;
+		}
+	</style>
+	<script>
+			window.onload = function(){
+				let oC = document.getElementById('c1');
+				let gd = oC.getContext('2d');//图形上下文接口
+				/*//开始绘制图形
+				gd.rect(100,100,200,200);
+				gd.stroke();
+				oC.onmousemove = function(){
+					gd.fillStyle='yellow';
+					gd.fill();
+					if(gd.fillStyle=='yellow'){
+						oC.onmousemove = null;
+					}
+				}*/
+				let cx = 400, cy = 300,r = 200;
+				oC.onmousemove = function(ev){
+					let a = ev.offsetX - cx;
+					let b = ev.offsetY - cy;
+					let xiebian = Math.sqrt(a*a+b*b);
+					gd.beginPath();
+					gd.arc(cx,cy,r,0,Math.PI*2,true);
+					if(xiebian <= r){
+						gd.fillStyle = 'yellow';
+					}else{
+						gd.fillStyle = 'red';
+					}
+					gd.fill();
+				}
+
+
+				
+
+			}
+	</script>
+</head>
+<body>
+	<canvas id="c1" width="800" height="600">
+		您的浏览器并不支持canvas，请<a href="http://chrome.google.com/">下载最新版浏览器</a>
+	</canvas>
+</body>
+</html>

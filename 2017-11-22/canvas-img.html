@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style media="screen">
+		body{
+			background: black;
+			text-align: center;
+		}
+		#c1{
+			margin-top:50px;
+			background: #fff;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			let oC = document.getElementById('c1');
+			let gd = oC.getContext('2d');
+			let oBtn1 = document.getElementById('btn1');
+			let oBtn2 = document.getElementById('btn2');
+			let oBtn3 = document.getElementById('btn3');
+
+			//每个像素占四位 r g b a 0~255
+			let oImg = new Image();
+			oImg.src="1.jpg";
+			oImg.onload =function(){
+				gd.drawImage(oImg,0,0);//将图片画到面板上
+				
+				/*console.log(imageData);
+				1.第一个小格子，里面的像素是什么
+				console.log(`r:${imageData.data[(599*800+0)*4]}`);
+				console.log(`g:${imageData.data[(599*800+0)*4+1]}`);
+				console.log(`b:${imageData.data[(599*800+0)*4+2]}`);
+				console.log(`a:${imageData.data[(599*800+0)*4+3]}`);*/
+				//2.变灰：需要求取平均值
+				oBtn1.onclick = function(){
+					let imageData = gd.getImageData(0,0,oC.width,oC.height);
+					for(var r = 0; r < oC.height; r++){
+						for(var c = 0; c < oC.width; c++){
+							//平均值
+							let rgbsum = imageData.data[(r*oC.width+c)*4] + imageData.data[(r*oC.width+c)*4+1] + imageData.data[(r*oC.width+c)*4+2]
+							let avg = (rgbsum)/3;
+							imageData.data[(r*oC.width+c)*4] = imageData.data[(r*oC.width+c)*4+1] = imageData.data[(r*oC.width+c)*4+2] = avg;
+						}
+					}
+					gd.putImageData(imageData,0,0);
+				}
+
+				//变黄
+				oBtn2.onclick = function(){
+					let imageData = gd.getImageData(0,0,oC.width,oC.height);
+					for(var r = 0; r < oC.height; r++){
+						for(var c = 0; c < oC.width; c++){
+							//255 165 52 1
+							/*imageData.data[(r*oC.width+c)*4] = 255;
+							imageData.data[(r*oC.width+c)*4+1] = 165;*/
+							imageData.data[(r*oC.width+c)*4+2] = 30;
+							/*imageData.data[(r*oC.width+c)*4+3] = 0.1;*/
+						}
+					}
+					gd.putImageData(imageData,0,0);
+				}
+
+				//变黄
+				oBtn3.onclick = function(){
+					let imageData = gd.getImageData(0,0,oC.width,oC.height);
+					for(var r = 0; r < oC.height; r++){
+						for(var c = 0; c < oC.width; c++){
+							//255 165 52 1
+							imageData.data[(r*oC.width+c)*4] = 10;
+							/*imageData.data[(r*oC.width+c)*4+1] = 165;*/
+							imageData.data[(r*oC.width+c)*4+2] = 20;
+							/*imageData.data[(r*oC.width+c)*4+3] = 0.1;*/
+						}
+					}
+					gd.putImageData(imageData,0,0);
+				}
+
+
+
+			}
+
+		}
+	</script>
+</head>	
+<body>
+		<input type="button" name="" value="变灰" id="btn1">
+    <input type="button" name="" value="变黄" id="btn2">
+    <input type="button" name="" value="变绿" id="btn3"><br>
+	<canvas id="c1" width="800" height="600">
+		您的浏览器并不支持canvas，请<a href="http://chrome.google.com/">下载最新版浏览器</a>
+	</canvas>
+</body>
+</html>

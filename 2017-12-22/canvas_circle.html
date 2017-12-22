@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>圆形</title>
+	<style media="screen">
+		body{
+			background: black;
+			text-align: center;
+		}
+		#c1{
+			margin-top:20px;
+			background: #fff;
+		}
+	</style>
+	<script>
+			window.onload = function(){
+				/*开始:做一个圆形或者弧*/
+				let oc = document.getElementById('c1');
+				let gd = oc.getContext('2d');
+
+				//gd.arc(x,y,r,start,stop,逆时针);---圆心的x,y（相对于左上角位置oc）,半径的r，起点位置，终止位置,(false指的是大圆弧，true指的是小弧)
+				gd.beginPath();
+				// gd.arc(100,100,200,0,2*Math.PI);
+				/*gd.arc(400, 300, 150, 1, 360, true); 这是角度，这是不对的*/
+				gd.arc(100, 100, 100, 80*Math.PI/180, 360*Math.PI/180,true);
+
+				gd.stroke();
+
+				
+
+			}
+	</script>
+</head>
+<body>
+	<canvas id="c1" width="800" height="600">
+		您的浏览器并不支持canvas，请<a href="http://chrome.google.com/">下载最新版浏览器</a>
+	</canvas>
+</body>
+</html>
