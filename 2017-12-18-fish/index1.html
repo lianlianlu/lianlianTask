@@ -13,31 +13,152 @@
 			margin-top: 108px;
 		}
 	</style>
-	<script src="js/common.js"></script>
-	<script src="js/sprite.js"></script>
-	<script src="js/fish.js"></script>
+	<script src="js/common.js" charset="utf-8"></script>
+  <script src="js/drawRect.js" charset="utf-8"></script>
+  <script src="js/sprite.js" charset="utf-8"></script>
+  <script src="js/fish.js" charset="utf-8"></script>
+  <script src="js/cannon.js" charset="utf-8"></script>
+  <script src="js/button.js" charset="utf-8"></script>
+  <script src="js/bullet.js" charset="utf-8"></script>
 	
 	<script type="text/javascript">
-		
-		
-
 		window.onload = function(){
 			let oC=document.getElementById('c1');
       let gd=oC.getContext('2d');
+      let lastFire = 0; //记录当前次的前一次时间
+      let fired = false; //判断是否一次点击开火结束
+      let MAX_FISH = 30;  //最多生成30条鱼
+
       const W = oC.width,H = oC.height;
 
       loadImgs(_resources, function (imgs){
-        let tower = new Sprite(_imgs.bottom,765,70);
-        tower.x = 400;
-        tower.y = H-70/2;
+      	//炮台
+        let tower=new Sprite(new DrawRect(_imgs.bottom, 0, 0, 756, 71));
+        tower.x=400;
+        tower.y=H-71/2+1;
+
+        //大炮
+        let cannon = new Cannon(1);
+        cannon.x = 443;
+        cannon.y = 574;
+
+        //鱼
+        let fishs = [];
+        //让炮头随着鼠标的方向转动而转动
+        oC.onmousemove = function(ev){
+        	//console.log(ev.offsetX,ev.offsetY);
+        	let changex = ev.offsetX - cannon.x;
+        	let changey = ev.offsetY - cannon.y;
+        	let ang = a2d(Math.atan2(changey,changex))+90
+        	cannon.rotation = ang;
+        }
+
+        //炮头  左右两边的加减号
+        //减号
+        let buttonMinus = new Button(
+        	new DrawRect(_imgs.bottom,135,75,36,28),
+        	new DrawRect(_imgs.bottom,91,75,36,28)
+        );
+        buttonMinus.x = 371;
+        buttonMinus.y = 570;
+
+        //减号
+        let buttonPlus = new Button(
+        	new DrawRect(_imgs.bottom,48,75,36,28),
+        	new DrawRect(_imgs.bottom,4,75,36,28)
+        );
+        buttonPlus.x = 520;
+        buttonPlus.y = 570;
+
+        //点击,加号和减号，让大炮的种类随着改变
+        buttonMinus.onclick = function(){
+        	if(cannon.type > 1){
+        		cannon.setType(cannon.type-1);
+        	}else{
+        		cannon.setType(1);
+        	}
+        }
+        buttonPlus.onclick = function(){
+        	if(cannon.type < 7){
+        		cannon.setType(cannon.type+1);
+        	}else{
+        		cannon.setType(7);
+        	}
+        }
+
+        //点击大炮发出子弹。先画出子弹,子弹是一个数组
+        let bullets = [];
+        //在mousedown 和 mouseup瞬间，完成active的按钮转换（active和normal）
+        let aBtn = [buttonMinus,buttonPlus];
+        oC.onmousedown = function(ev){
+        	aBtn.forEach(btn => {
+        	  btn.down(ev.offsetX,ev.offsetY);
+        	})
+        	
+        	if(Date.now() - lastFire >= 1000){
+      			lastFire = Date.now();
+      			//炮弹
+	          let bullet=new Bullet(cannon.type, cannon.x, cannon.y, cannon.rotation);
+	        	bullets.push(bullet);
+		        fired = true;
+        	}
+        }
+
+        oC.onmouseup = function(ev){
+        	aBtn.forEach(btn => {
+        	  btn.up(ev.offsetX,ev.offsetY);
+        	})
+        }
 
 
-        
         function animate(){
         	requestAnimationFrame(animate);
+        	//生成不超过30条鱼再屏幕上。随机生成
+        	if(rnd(1, 20)==1 && fishs.length<MAX_FISH){
+            let fish=new Fish(rnd(1, 5));
+            if(rnd(0,2)==0){  //左
+              fish.x=-100;
+              fish.rotation=90;
+            }else{            //右
+              fish.x=W+100;
+              fish.rotation=-90;
+            }
+            fish.y=rnd(0, H-100);
+            fishs.push(fish);
+          }
+
+
         	gd.clearRect(0, 0, oC.width, oC.height);
+        	//炮台
         	tower.draw(gd);
-          
+        	//子弹
+					bullets.forEach((bullet) => {
+						bullet.move();//运动的公共方法
+        	  bullet.draw(gd);
+
+        	  return !bullet.outRect(-100,-100,W+200,H+200);//子弹跑到外面去了
+        	});
+
+        	//fishs
+        	fishs.forEach((fish) => {
+        	 	fish.move();
+        	 	fish.nextFrame()
+        	  fish.draw(gd);
+        	  
+        	  return !fish.outRect(-100,-100,W+200,H+200);//鱼儿跑到画布外面去了。此时就要消灭掉，然后再重新生成，不然鱼会很多很多很多占用内存，游戏不一会儿就卡死了
+        	})
+        	
+        	if(fired){
+            ret=cannon.nextFrame();
+            if(ret==true){
+              fired=false;
+            }
+          }
+					//炮
+        	cannon.draw(gd);
+        	//左右加减按钮
+        	buttonMinus.draw(gd);
+        	buttonPlus.draw(gd);
         }
 				
         requestAnimationFrame(animate);
