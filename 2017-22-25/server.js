@@ -7,10 +7,23 @@ const querystring = require('querystring');
 
 let server = http.createServer((req,res) => {
 	let {pathname,query} = url.parse(req.url,true);
-	console.log(pathname,query);
+	//console.log(pathname,query);
 
 	//POST数据
 	let aBuffer = [];
+	req.on('data',data=>{
+		//console.log(data);
+		aBuffer.push(data);
+	});
+
+	req.on('end', ()=>{
+		let data = Buffer.concat(aBuffer);
+
+		//urlencoded
+		const post = querystring.parse(data.toString());
+
+		console.log('POST数据:',post);
+	});
 	
 });
 

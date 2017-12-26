@@ -76,7 +76,7 @@ class Sprite{
   }
 
   outRect(x,y,w,h){
-    if(this.x < x || this.y < y || this.x+w || this.y > y + h){
+    if(this.x < x || this.y < y || this.x> x+w || this.y > y + h){
       return true;//在画布里面
     }else{
       return false;//在画布外面
@@ -107,8 +107,9 @@ class Sprite{
   */
   cullTest(other){
     //this.x 为鱼的，other.x 为炮弹的。炮弹作为参数传入，鱼作为主对象调用
-    return Math.sqrt(Math.pow(this.x-other.x,2) + Math.pow(this.y-other.y,2)) <this.radius + other.radius;
+    return Math.sqrt(Math.pow(this.x-other.x, 2)+Math.pow(this.y-other.y, 2))<this.radius+other.radius;
   }
+  
  
 
 

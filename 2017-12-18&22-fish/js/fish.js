@@ -19,11 +19,10 @@ class Fish extends Sprite{
 		this.type = type;
 
 		this.curFrame = 0;
-		this.MAX_FRAME = 4;
-
 		this.speed = rnd(1,4);
-
+		this.MAX_FRAME=4;
 		this.frameRate = 5;
+		this.MAX_FRAME = 4;
 
 		this.radius = SIZE[type].r;//鱼的碰撞半径
 
