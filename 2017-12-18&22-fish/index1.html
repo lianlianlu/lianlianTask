@@ -42,8 +42,6 @@
         cannon.x = 443;
         cannon.y = 574;
 
-        //鱼
-        let fishs = [];
         //让炮头随着鼠标的方向转动而转动
         oC.onmousemove = function(ev){
         	//console.log(ev.offsetX,ev.offsetY);
@@ -88,6 +86,8 @@
 
         //点击大炮发出子弹。先画出子弹,子弹是一个数组
         let bullets = [];
+        //鱼
+        let fishs = [];
         //在mousedown 和 mouseup瞬间，完成active的按钮转换（active和normal）
         let aBtn = [buttonMinus,buttonPlus];
         oC.onmousedown = function(ev){
@@ -132,7 +132,7 @@
         	//炮台
         	tower.draw(gd);
         	//子弹
-					bullets.forEach((bullet) => {
+					bullets = bullets.filter(bullet => {
 						bullet.move();//运动的公共方法
         	  bullet.draw(gd);
 
@@ -140,13 +140,14 @@
         	});
 
         	//fishs
-        	fishs.forEach((fish) => {
+        	fishs =fishs.filter(fish => {
         	 	fish.move();
         	 	fish.nextFrame()
         	  fish.draw(gd);
         	  
         	  return !fish.outRect(-100,-100,W+200,H+200);//鱼儿跑到画布外面去了。此时就要消灭掉，然后再重新生成，不然鱼会很多很多很多占用内存，游戏不一会儿就卡死了
         	})
+          console.log(fishs);
         	
         	if(fired){
             ret=cannon.nextFrame();
@@ -154,13 +155,76 @@
               fired=false;
             }
           }
-					//炮
+			   //炮
         	cannon.draw(gd);
         	//左右加减按钮
         	buttonMinus.draw(gd);
         	buttonPlus.draw(gd);
+
+          /*鱼和子弹碰到一起，鱼变成死鱼并消失，子弹直接消失，并在原地画出
+          金币*/
+          fishs=fishs.filter(fish=>{
+            let colled=false;
+            bullets=bullets.filter(bullet=>{
+              if(colled==false){
+                if(fish.collTest(bullet)){
+                  /*if(Math.random()<bullet.type*10/(10+(fish.type-1)*20)){
+                    colled=true;
+                  }*/
+                  console.log('哈哈，碰上了');
+                  return false;
+                }else{
+                  return true;
+                }
+              }else{
+                return true;
+              }
+            });
+
+            if(colled==true){
+              //金币
+              let a=fish.x-coinCollector.x;
+              let b=coinCollector.y-fish.y;
+
+              let coin=new Coin(1, fish.x, fish.y);
+              coins.push(coin);
+
+              return false;
+            }else{
+              return true;
+            }
+
+          });
+          /*fishs = fishs.filter(fish => {
+            let culled = false;//被淘汰的鱼
+            bullets.filter(bullet => {
+              if(culled ==false){
+                //还没有被淘汰
+                console.log(fish.cullTest(bullet));
+                if(fish.cullTest(bullet)){
+                  //鱼和子弹碰上了
+                  if(Math.random()<bullet.type*10/(10+(fish.type-1)*20)){
+                    colled=true;
+                  }
+                  console.log('干掉一条鱼');
+                }else{ 
+                  return true;
+                }
+              }else{
+                return true;//已经淘汰了，就不在考虑之内了
+              }
+            });
+
+            if(culled == true){
+              return false;
+            }else{
+              return true;
+            }
+          });*/
+          
+          
+
         }
-				
         requestAnimationFrame(animate);
         
       });

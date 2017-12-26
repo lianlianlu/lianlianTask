@@ -105,9 +105,11 @@ class Sprite{
     碰撞的时候  (x1-x2)^2+(y1-y2)^2 开根号，算出两个圆心的距离
     如果这个小于r1+r2。那么相交。碰上
   */
-  collTest(){
-    
+  cullTest(other){
+    //this.x 为鱼的，other.x 为炮弹的。炮弹作为参数传入，鱼作为主对象调用
+    return Math.sqrt(Math.pow(this.x-other.x,2) + Math.pow(this.y-other.y,2)) <this.radius + other.radius;
   }
+ 
 
 
 
