@@ -20,6 +20,7 @@
   <script src="js/cannon.js" charset="utf-8"></script>
   <script src="js/button.js" charset="utf-8"></script>
   <script src="js/bullet.js" charset="utf-8"></script>
+  <script src="js/coin.js" charset="utf-8"></script>
 	
 	<script type="text/javascript">
 		window.onload = function(){
@@ -28,6 +29,10 @@
       let lastFire = 0; //记录当前次的前一次时间
       let fired = false; //判断是否一次点击开火结束
       let MAX_FISH = 30;  //最多生成30条鱼
+
+      const coinCollector={x:106,y:576}//就是图片左下角的那个金钱收集盒
+
+      let plaerScore = 1000;//玩家的初始分数，是1000分
 
       const W = oC.width,H = oC.height;
 
@@ -46,6 +51,15 @@
         let cannon = new Cannon(7);
         cannon.x = 443;
         cannon.y = 574;
+
+        //金币
+        let coins = [];
+        /*分数--使用的是数字格式，然后带动图片的上下乘积（也就是高度）
+          游戏规则：
+          打一炮，就会少了相应等级的金币
+          打到鱼了，就会
+        */
+        let scores = [];
 
         //让炮头随着鼠标的方向转动而转动
         oC.onmousemove = function(ev){
@@ -184,6 +198,26 @@
             });
 
             if(culled == true){
+              //一旦鱼和子弹碰上,金币就开始出现，并且以coinCollector为终点
+              let xLength = fish.x - coinCollector.x;
+              let yLength = coinCollector.y - fish.y;
+              console.log(`${xLength}:${yLength}`);
+              console.log('----------------------');
+              let i = 0;
+              let timer = setInterval(() => {
+                let coin = new Coin(1,fish.x,fish.y);
+                coins.push(coin);
+                
+                i ++;
+                if(i == Math.pow(2,fish.type)){
+                  clearInterval(timer);
+                }
+
+
+              }, 50)
+              fishs = fishs.filter(item=>item!=fish);//重新获取一次fishs
+
+
               return false;
             }else{
               return true;

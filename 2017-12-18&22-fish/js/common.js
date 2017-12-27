@@ -6,7 +6,6 @@ const _resources={
   fish3: 'img/fish3.png',
   fish4: 'img/fish4.png',
   fish5: 'img/fish5.png',
-  coin1: 'img/coinAni1.png',
   cannon1: 'img/cannon1.png',
   cannon2: 'img/cannon2.png',
   cannon3: 'img/cannon3.png',
