@@ -184,6 +184,7 @@
               if(culled ==false){//还没有被淘汰
                 if(fish.cullTest(bullet)){
                   //鱼和子弹碰上了
+                  
                   /*Math.random() 取值范围[0,1)*/
                   if(Math.random()<bullet.type*10/(10+(fish.type-1)*20)){//具体回家看看，这句话为什么这么写。因为子弹越大，打鱼越好打是不？
                     culled=true;
