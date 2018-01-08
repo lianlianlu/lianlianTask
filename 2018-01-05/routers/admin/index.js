@@ -27,6 +27,7 @@ router.post('/login',(req,res) => {
 	//判断两次，分别判断最高级管理员和普通管理员
 	if(username == config.root_username){
 		if(common.md5(password) == config.root_password){
+
 				req.session['admin_ID'] = '1';
 				res.redirect('/admin/');
 		}else{
@@ -42,7 +43,6 @@ router.post('/login',(req,res) => {
 			}else{
 				if(data[0].password == common.md5(password)){
 					req.session['admin_ID'] = data[0].ID;
-					console.log('登录成功');
 					res.redirect('/admin/');
 				}else{
 					common.showError(res,'用户名或者密码错误4');
@@ -53,9 +53,22 @@ router.post('/login',(req,res) => {
 
 });
 //进入主界面
-router.get('/',(req,res)=>{
-	res.send('ok');
+router.get('/', (req, res)=>{
+	res.send('oK');
 	res.end();
+  //res.redirect('/admin/house');
+});
+
+router.get('/house', (req, res)=>{
+  /*req.db.query(`SELECT ID,title,ave_price,tel FROM house_table`, (err, data)=>{
+    if(err){
+      res.sendStatus(500);
+    }else{
+      res.render('index', {data});
+    }
+  });*/
+
+  res.render('index');
 });
 
 
