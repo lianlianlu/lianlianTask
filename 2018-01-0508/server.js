@@ -53,8 +53,9 @@ server.set('views','./template');//选择模板文件夹
 //处理请求。使用router
 server.use('/admin/',require('./routers/admin'));//所有处理admin的请求都放在这里
 
+//空值时，直接引入到后台首页
 server.use('/',require('./routers/www'));
 
-//静态文件
+//静态文件,
 server.use(express.static('./www/'));
 

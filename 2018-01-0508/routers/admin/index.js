@@ -54,9 +54,9 @@ router.post('/login',(req,res) => {
 });
 //进入主界面
 router.get('/', (req, res)=>{
-	res.send('oK');
-	res.end();
-  //res.redirect('/admin/house');
+	// res.send('oK');
+	// res.end();
+  res.redirect('/admin/house');
 });
 
 router.get('/house', (req, res)=>{
@@ -67,8 +67,9 @@ router.get('/house', (req, res)=>{
       res.render('index', {data});
     }
   });*/
+  
 
-  res.render('index');
+  res.render('index',{});
 });
 
 
