@@ -12,14 +12,14 @@
     <div class="page-wrap">
       <div class="page-menu">
         <ul class="nav nav-pills nav-stacked">
-          <li role="presentation" class="active"><a href="#">房源</a></li>
-          <li role="presentation"><a href="#">友情链接</a></li>
-          <li role="presentation"><a href="#">广告管理</a></li>
+          <li role="presentation" title="house"><a href="/admin/house" target="_self">房源</a></li>
+          <li role="presentation" title="link"><a href="/admin/link" target="_self">友情链接</a></li>
+          <li role="presentation" title="ad"><a href="/admin/ad" target="_self">广告管理</a></li>
         </ul>
       </div>
       <div class="page-content">
         <div class="navbar navbar-default">
-          <form class="navbar-form navbar-left" action="index.html" method="post">
+          <form class="navbar-form navbar-left" action="?" method="get">
             <div class="form-group" style="margin-right:20px;">
               <button type="button" class="btn btn-default glyphicon glyphicon-plus" id="btn-add">新建</button>
             </div>
@@ -27,43 +27,60 @@
               <button type="button" class="btn btn-default glyphicon glyphicon-remove">删除</button>
             </div>
             <div class="form-group">
-              <input type="search" class="form-control">
-              <button type="button" class="btn btn-default">搜索</button>
+              <input type="search" class="form-control" name="keyword" value="<%=keyword%>">
+              <button type="submit" class="btn btn-default" id="searchbtn">搜索</button>
             </div>
           </form>
         </div>
-        <nav aria-label="Page navigation">
-          <ul class="pagination margin-0">
-            <li>
-              <a href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-              </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-              <a href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <%if(pageall != 0 ){%>
+          <nav aria-label="Page navigation">
+            <ul class="pagination margin-0">
+              <li>
+                <a href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <%
+                let start = Math.ceil(curr_page - (show_page-1)/2);
+                let end = Math.ceil(curr_page + (show_page-1)/2);
+
+                if(start < 1){
+                  start = 1
+                }
+                if(end > pageall){
+                  end = pageall;
+                }
+
+               for(let i = start; i <= end; i++){
+                  if(i == curr_page){
+                  %>
+                    <li><a href="?page=<%=i %>">[<%=i -%>]</a></li>
+                  <%}else {%>
+                    <li><a href="?page=<%=i %>"><%=i -%></a></li>
+                  <%}}%>
+              
+              <li>
+                <a href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        <%}%>
         <table class="table">
           <thead>
             <tr>
-              <th width="300">
+              <th width="400">
                 <label>
                   <input type="checkbox">
                   ID
                 </label>
               </th>
-              <th width="400">标题</th>
-              <th>均价</th>
-              <th>电话</th>
-              <th>操作</th>
+              <% for(let name in fieldNameObj){
+                if(name == 'ID') continue;
+              %> 
+                <th><%= fieldNameObj[name] %></th>
+              <%}%>
             </tr>
           </thead>
           <tbody>
@@ -75,12 +92,14 @@
                     <%= json.ID%>
                   </label>
                 </td>
-                <td><%= json.title%></td>
-                <td><%= json.ave_price%></td>
-                <td><%= json.tel%></td>
+                <% for(let name in fieldNameObj){
+                  if(name == 'ID') continue;
+                %> 
+                  <td><%= json[name]%></td>
+                <%}%>
                 <td>
-                  <a href="javascript:;">编辑</a>
-                  <a href="/admin/house/delete?id=<%= json.ID%>" onclick="return confirm('你确定删除这个房屋消息吗？删除不可撤销哦')">删除</a>
+                  <a href="javascript:;" onclick="mod_data('<%=json.ID%>')">编辑</a>
+                  <a href="/admin/<%= table%>/delete?id=<%= json.ID%>" onclick="return confirm('你确定删除该消息吗？删除不可撤销哦')">删除</a>
                 </td>
               </tr>
             <% }) %>
@@ -101,48 +120,9 @@
       <div class="panel-body" style="overflow:auto; height:460px;">
         <form class="form-horizontal" method="post" action="?" enctype="multipart/form-data">
           <div id="form_contrainer">
-            
+            <input type="hidden" name="is_mod" id="is_mod" value="false">
+            <input type="hidden" name="old_id" id="old_id" value="">
           </div>
-          <!-- <div class="form-group">
-            <label for="id1" class="col-sm-2 control-label">数据1</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="id1" placeholder="请输入数据...">
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="id2" class="col-sm-2 control-label">数据2</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="id2" placeholder="请输入数据...">
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="id3" class="col-sm-2 control-label">数据3</label>
-            <div class="col-sm-10">
-              <textarea class="form-control" rows="10" id="id3" placeholder="请输入数据..."></textarea>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="id4" class="col-sm-2 control-label">选择</label>
-            <div class="col-sm-10">
-              <select class="form-control" id="id4">
-                <option value="1">数据1</option>
-                <option value="2">数据2</option>
-                <option value="3">数据3</option>
-                <option value="4">数据4</option>
-              </select>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="id4" class="col-sm-2 control-label">文件</label>
-            <div class="col-sm-10">
-              <input type="file" class="form-control">
-            </div>
-          </div> -->
-
           <div class="form-group">
             <div class="col-sm-10 col-sm-offset-2">
               <button type="submit" class="btn btn-primary" id="btn-submit">提交</button>
@@ -156,11 +136,29 @@
   </body>
 </html>
 
-
+<script src="/js/form_datas.js" charset="utf-8"></script>
 <script>
-  window.onload = function(){
-    const $ = document.querySelectorAll.bind(document);
+  //编辑前，所得当前id数据
+    function mod_data(id){
+      $.ajax({
+        url:'/admin/<%=table%>/get_data',
+        data:{id},
+        dataType:'json',
+        success(json){
+          $('#shadow').show();
+          $('#dialog').show();
 
+          createForm(json);
+          $('#is_mod').val('true');
+          $('#old_id').val(id);
+        },
+        error(err){
+          alert('no data,please refresh again');
+        }
+      }); 
+    }
+  //window.onload = function(){
+    //const $ = document.querySelectorAll.bind(document);
     //显示隐藏
     let oShadow = $('#shadow')[0];
     let oDialog = $('#dialog')[0];
@@ -168,9 +166,12 @@
     let oDialogCancel = $('#dialog-cancel')[0];
     let oCancel = $('#btn-cancel')[0]
 
+
     oBtnAdd.onclick = function(){
       oShadow.style.display = 'block';
       oDialog.style.display = 'block';
+      createForm();
+      $('#is_mod')[0].value= "false";
     }
 
     oCancel.onclick = oDialogCancel.onclick = function(){
@@ -179,42 +180,51 @@
     }
 
     //动态生成表单
+    const from_inputs = form_datas['<%=table%>'];
     let oFormContainer = $('#form_contrainer')[0];
+    //生成表单
+    function createForm(old_data = {}){
+      oFormContainer.innerHTML = '';
+      if(from_inputs){
+        for(let i = 0; i < from_inputs.length; i ++){
+          let data = from_inputs[i];
+          let oDiv = document.createElement('div');
 
-    const oInputs = [
-      {type:'text',name:'title',title:'标题'},
-      {type:'text',name:'sub_title',title:'副标题'},
-      {type:'text',name:'position_main',title:'主位置'},
-      {type:'text',name:'position_second',title:'副位置'},
-      {type:'number',name:'ave_price',title:'均价'},
-      {type:'number',name:'area_min',title:'最小面积'},
-      {type:'number',name:'area_max',title:'最大面积'},
-      {type:'tel',name:'tel',title:'电话'},
-      {type:'date',name:'sale_time',title:'开盘日期'},
-      {type:'date',name:'submit_time',title:'交房日期'},
-      {type:'text',name:'building_type',title:'建筑类型'},
-      {type:'file',name:'main_img',title:'大图'},
-      {type:'file',name:'img',title:'小图(多选)',multiple:true},
-      {type: 'text', name: 'property_types', title: '户型'},
-      {type: 'file', name: 'property_img', title: '户型图'},
+          oDiv.className = 'form-group';
+          oDiv.innerHTML = `
+            <label for="id${i}" class="col-sm-2 control-label">${data.title}</label>
+            <div class="col-sm-10">
+              <input type="${data.type}" class="form-control" name="${data.name}" id="id${i}" placeholder="请输入数据..." ${data.multiple?'multiple':''} value="${old_data[data.name]||''}">
+            </div>
+          `
+            // 动态的插入到oFormContainer里面
+            oFormContainer.appendChild(oDiv);
 
-    ]
-
-    //oFormContainer.innerHTML = '';
-    for(let i = 0; i < oInputs.length; i ++){
-      let data = oInputs[i];
-      let oDiv = document.createElement('div');
-
-      oDiv.className = 'form-group';
-      oDiv.innerHTML = `
-        <label for="id${i}" class="col-sm-2 control-label">${data.title}</label>
-        <div class="col-sm-10">
-          <input type="${data.type}" class="form-control" name="${data.name}" id="id${i}" placeholder="请输入数据..." ${data.multiple?'multiple':''}>
-        </div>
-      `
-        // 动态的插入到oFormContainer里面
-        oFormContainer.appendChild(oDiv);
+            //时间，单独处理,将毫秒数转化成正常时间
+            if(data.type == 'date'){
+              function toDou(n){
+                return (parseInt(n) >= 10)? (''+n):('0'+n);
+              }
+              if(old_data[data.name] && old_data[data.name]!=0){
+                let oDate = new Date(old_data[data.name]*1000);
+                let old_time = oDate.getFullYear()+'-'+toDou(oDate.getMonth()+1)+'-'+toDou(oDate.getDate())
+                $(`#id${i}`).val(old_time);
+              }
+            }
+        }
+      }
     }
+
+    
+    
+    //点击左侧菜单栏，点击样式改变
+    let oMenuNav = $('.nav')[0];
+    Array.from(oMenuNav.children).forEach(oli => {
+      oli.className = oli.title == "<%=table %>"?'active':'';
+    })
+
+
+
     
 
 
@@ -223,6 +233,5 @@
 
 
 
-
-  }
+ // }
 </script>
